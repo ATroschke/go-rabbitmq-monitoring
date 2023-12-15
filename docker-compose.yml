@@ -20,5 +20,21 @@ services:
       - "9090:9090"
     volumes:
       - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
+  producer:
+    build: 
+      context: ./producer
+      dockerfile: Dockerfile
+    container_name: producer
+    restart: unless-stopped
+    depends_on:
+      - rabbitmq
+  consumer:
+    build: 
+      context: ./consumer
+      dockerfile: Dockerfile
+    container_name: consumer
+    restart: unless-stopped
+    depends_on:
+      - rabbitmq
 volumes:
   rabbitmq:
